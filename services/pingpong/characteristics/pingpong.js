@@ -1,11 +1,11 @@
 var bleno = require('bleno');
 var util = require('util');
-
+const Constants = require('../../../constants')
 var BlenoCharacteristic = bleno.Characteristic;
 
 var PingPongCharacteristic = function() {
  PingPongCharacteristic.super_.call(this, {
-    uuid: '8e66b5c3-9851-4a29-8252-295ad263f4b1',
+    uuid: Constants.uuidFor(module.filename),
     properties: ['read', 'write', 'notify'],
     value: null
   });

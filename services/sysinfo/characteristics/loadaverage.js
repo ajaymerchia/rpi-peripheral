@@ -1,12 +1,12 @@
 var bleno = require('bleno');
 var os = require('os');
 var util = require('util');
-
+const Constants = require('../../../constants')
 var BlenoCharacteristic = bleno.Characteristic;
 
 var LoadAverageCharacteristic = function() {
  LoadAverageCharacteristic.super_.call(this, {
-    uuid: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb10',
+    uuid: Constants.uuidFor(module.filename),
     properties: ['read'],
   });
 

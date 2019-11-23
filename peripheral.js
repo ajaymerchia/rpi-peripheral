@@ -5,11 +5,13 @@ var Services = require('./services/master');
 
 var allServiceIDs = []
 var allServices = []
+var serviceIDtoService = {}
 
 for (serviceName of Object.keys(Services)) {
   var service = Services[serviceName];
   allServiceIDs.push(service.uuid)
   allServices.push(service)
+  serviceIDtoService[service.uuid] = service
 }
 
 bleno.on('stateChange', function(state) {
@@ -17,7 +19,7 @@ bleno.on('stateChange', function(state) {
 
   if (state === 'poweredOn') {
     for (serviceID of allServiceIDs) {
-      console.log(`Advertising ${serviceID}`);
+      console.log(`Launching ${serviceIDtoService[serviceID].constructor.name}(${serviceID})`);
       bleno.startAdvertising(bleno.name, [serviceID]);
     }
   }
@@ -35,7 +37,6 @@ bleno.on('advertisingStart', function(error) {
   );
 
   if (!error) {
-
     bleno.setServices(allServices);
   }
 });

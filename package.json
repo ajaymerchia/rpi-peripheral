@@ -1,0 +1,15 @@
+{
+  "name": "rpi-peripheral",
+  "version": "1.0.0",
+  "description": "Raspbian peripheral for dispatching OS commands from iOS central",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "sudo node peripheral.js"
+  },
+  "author": "Ajay Raj Merchia",
+  "license": "ISC",
+  "dependencies": {
+    "bleno": "^0.3.5"
+  }
+}

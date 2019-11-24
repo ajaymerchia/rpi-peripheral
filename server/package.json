@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "sudo node peripheral.js"
+    "start": "sudo node server.js"
   },
   "author": "Ajay Raj Merchia",
   "license": "ISC",

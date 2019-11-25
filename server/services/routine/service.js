@@ -1,7 +1,7 @@
 var bleno = require('bleno');
 var util = require('util');
 const Constants = require('../../constants')
-var characteristicNames = ["routinereceive"]
+var characteristicNames = ["routinereceive", "player"]
 
 
 

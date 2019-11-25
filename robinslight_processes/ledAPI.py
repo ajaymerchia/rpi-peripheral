@@ -1,4 +1,6 @@
 import time
+from neopixel import *
+
 
 # This file will be responsible for setting the color of the LEDs
 # LED strip configuration:
@@ -11,19 +13,31 @@ LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
-RUNTIME_SPEEDUP = 10
+RUNTIME_SPEEDUP = 1
 
+# Process arguments
+# Create NeoPixel object with appropriate configuration.
+strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+# Intialize the library (must be called once before other functions).
+strip.begin()
 
 def wait(s):
     waitTime = s / RUNTIME_SPEEDUP
-    print("waiting", waitTime)
     time.sleep(waitTime)
 
 def setStripColor(color):
-    print("setting", color)
+    # print("setting", color)
     for i in range(LED_COUNT):
         setLEDColor(i, color)
-    # strip.show()
+    strip.show()
 
 def setLEDColor(idx, color):
-    pass
+    format = Color(color[1], color[0], color[2]) # FIXME: Does the Neopixel API seriously conflate the green and red channels?
+    strip.setPixelColor(idx, format)
+
+if __name__ == '__main__':
+    setStripColor((255, 0, 0)) # shows green, should be red
+    wait(1)
+    setStripColor((0, 255, 0)) # shows red, should be green
+    wait(1)
+    setStripColor((0, 0, 255)) # shows blue, should be blue

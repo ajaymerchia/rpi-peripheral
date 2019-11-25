@@ -24,6 +24,8 @@ if __name__ == '__main__':
     print(error)
 
     print("LEXER COMPLETE\n\n")
+    for line in compiledLines:
+        print(line)
 
     # cs1 = checksum(compiledLines)
     compiledBlob = pickle.dumps(compiledLines)
@@ -33,3 +35,4 @@ if __name__ == '__main__':
 
     print("Instructions:\t{0}".format(len(compiledLines)))
     print("Bytes:\t\t{0}".format(len(compiledBlob)))
+    print("Written to {0}".format(targetFile))

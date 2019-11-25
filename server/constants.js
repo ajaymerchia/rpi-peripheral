@@ -16,10 +16,11 @@ module.exports = {
         loadaverage: {id: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb03'},
       }
     },
-    routinereceive: {
+    routine: {
       id: "a226b9d9-95f2-4045-ab7c-08a4c738b700",
       characteristics: {
-        routinereceive: {id: "a226b9d9-95f2-4045-ab7c-08a4c738b701"}
+        routinereceive: {id: "a226b9d9-95f2-4045-ab7c-08a4c738b701"},
+        player: {id: "a226b9d9-95f2-4045-ab7c-08a4c738b702"}
       }
     }
   }

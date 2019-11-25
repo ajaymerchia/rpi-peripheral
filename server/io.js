@@ -2,7 +2,7 @@ var fs = require('fs')
 
 exports.store = (filename, data) => {
   return new Promise(function(resolve, reject) {
-    fs.writeFile(`../data/${filename}.txt`, data, (err) => {
+    fs.writeFile(`../data/${filename}`, data, (err) => {
       if (err) reject(err);
       else resolve(true)
     })
@@ -12,7 +12,7 @@ exports.store = (filename, data) => {
 
 exports.read = (filename) => {
   return new Promise(function(resolve, reject) {
-    fs.readFile(`../data/${filename}.txt`, (err, buf) => {
+    fs.readFile(`../data/${filename}`, (err, buf) => {
       if (err) reject(err);
       else resolve(buf.toString())
     })
@@ -25,14 +25,14 @@ function runtest() {
   const test2 = "random string2"
 
   process.stdout.write("Testing accuracy on initial write... ");
-  exports.store("temp", test)
-  .then(() => { return exports.read("temp") })
+  exports.store("temp.txt", test)
+  .then(() => { return exports.read("temp.txt") })
   .then((data) => {
     console.log((data === test ? "Success!" : `Mismatch Error!\n\treceived: ${data}\n\texpected: ${test}\n\n`));
     process.stdout.write("Testing accuracy on second write... ");
-    return exports.store("temp", test2)
+    return exports.store("temp.txt", test2)
   })
-  .then(() => { return exports.read("temp") })
+  .then(() => { return exports.read("temp.txt") })
   .then((data) => {
     console.log((data === test2 ? "Success!" : `Mismatch Error!\n\treceived: ${data}\n\texpected: ${test}\n\n`));
   })

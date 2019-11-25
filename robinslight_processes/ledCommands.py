@@ -17,7 +17,9 @@ def rgb(hexVal):
 	return (r,g,b)
 
 def addTo(compilerSummary, color, postWait):
-	compilerSummary.append((color, postWait/1000))
+
+	print(postWait/float(1000))
+	compilerSummary.append((color, postWait/float(1000)))
 
 def offEffect(**kwargs):
 	duration = kwargs.get('duration', None)

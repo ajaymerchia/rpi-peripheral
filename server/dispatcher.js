@@ -1,4 +1,5 @@
-const { spawn }     = require('child_process');
+const child     = require('child_process');
+const spawn     = child.spawn
 
 exports.runPythonScript = (filename, cmdlineargs) => {
   if (!cmdlineargs) {

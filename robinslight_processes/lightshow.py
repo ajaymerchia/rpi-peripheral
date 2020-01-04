@@ -16,6 +16,7 @@ if __name__ == '__main__':
     r = open(targetFile, "rb+")
     blobLoaded = r.read().strip()
     lightshow = pickle.loads(blobLoaded)
+    print(lightshow[-5:])
 
     offset = 0
     startIdx = 0

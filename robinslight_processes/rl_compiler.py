@@ -28,7 +28,7 @@ if __name__ == '__main__':
         print(line)
 
     # cs1 = checksum(compiledLines)
-    compiledBlob = pickle.dumps(compiledLines)
+    compiledBlob = pickle.dumps(compiledLines, protocol=2)
     w = open(targetFile, "wb+")
     w.write(compiledBlob)
     w.close()

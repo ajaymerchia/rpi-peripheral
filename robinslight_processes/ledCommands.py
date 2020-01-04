@@ -6,7 +6,7 @@
 # Any effect returns whether it causes the entire sequence
 # to terminate along with an error message.
 import time
-import ledAPI
+import sys
 
 LOG = False
 
@@ -14,22 +14,22 @@ def rgb(hexVal):
 	r = ((hexVal & 0xFF0000) >> 16)
 	g = ((hexVal & 0xFF00) >> 8)
 	b = (hexVal & 0xFF)
-	return (r,g,b)
+	return (int(r),int(g),int(b))
 
 def addTo(compilerSummary, color, postWait):
-
-	print(postWait/float(1000))
 	compilerSummary.append((color, postWait/float(1000)))
 
 def offEffect(**kwargs):
 	duration = kwargs.get('duration', None)
+	summary = kwargs.get('summary', [])
+
 	if duration is None:
 		return True, 'invalid duration.'
 
 	if LOG:
 		print("OFF")
 		print(duration)
-	staticEffect(duration=duration, colors=[0])
+	staticEffect(duration=duration, colors=[0], summary=summary)
 
 	return False, 'success.'
 
@@ -121,26 +121,41 @@ def fadeEffect(**kwargs):
 	timePerTransition = duration/len(transitions)
 	sectionDeltas = []
 
+	timeRequested = 0
+
 	for (start, end) in transitions:
 		startC = rgb(start)
 		endC = rgb(end)
 		deltas = [(c[1]-c[0]) for c in zip(startC, endC)]
 		sectionDeltas.append(deltas)
 
-	currColor = rgb(transitions[0][0])
 	for i in range(len(transitions)):
-		deltas = sectionDeltas[i]
-		numSteps = max(map(abs, deltas))
-		durationPerStep = timePerTransition/numSteps
-		stepSize = list(map(lambda x: x/numSteps, deltas))
+		currColor = rgb(transitions[i][0])
 
-		for i in range(numSteps):
+		deltas = sectionDeltas[i]
+		numSteps = max(map(abs, deltas)) + 1
+		durationPerStep = timePerTransition/(numSteps + 1)
+		stepSize = list(map(lambda x: float(x)/numSteps, deltas))
+
+		for stepIdx in range(numSteps):
 			currColor = [sum(components) for components in zip(currColor, stepSize)]
+
+			for comp in currColor:
+				if comp < 0:
+					print("ERROR\n\n\n\n\n\n\n")
+					print(i)
+					print(stepSize, stepIdx, numSteps)
+					print(summary[numSteps:])
+					print(map(rgb, transitions[i]))
+					sys.exit(-1)
+
 			exportColor = tuple(map(round, currColor))
+			timeRequested += durationPerStep
 			# executeColor(exportColor)
 			# wait(durationPerStep)
 			addTo(summary, exportColor, durationPerStep)
 
+	print("Fading effect scheduled to take up {0} of {1} allocation".format(timeRequested, duration))
 
 	return False, 'success.'
 

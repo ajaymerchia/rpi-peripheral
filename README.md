@@ -53,6 +53,9 @@ and run the following:
 sudo chown root /etc/rc.local
 sudo chmod 755 /etc/rc.local
 ```
+
+Reference this if you get stuck: https://askubuntu.com/questions/9853/how-can-i-make-rc-local-run-on-startup
+
 ## 3. Setup Node & NPM
 Run `uname -m` in terminal and you'll see what type of processor this Pi is equipped with.
 

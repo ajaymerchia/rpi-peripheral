@@ -1,4 +1,4 @@
-﻿# Raspberry Pi Config Instructions
+# Raspberry Pi Config Instructions
 ##  1. Installing the OS
 
 Follow this guide  [https://learn.sparkfun.com/tutorials/getting-started-with-the-raspberry-pi-zero-wireless/all](https://learn.sparkfun.com/tutorials/getting-started-with-the-raspberry-pi-zero-wireless/all)
@@ -33,13 +33,26 @@ You also need to setup the run time script.
 
 ```
 cd ~
-touch robinslight_start
-echo "cd /home/pi/wkspc/rpi-peripheral && sudo ./status red &" >> robinslight_start
-echo "cd /home/pi/wkspc/rpi-peripheral && sudo ./bleconfig" >> robinslight_start
-echo "cd /home/pi/wkspc/rpi-peripheral/server && sudo npm start" >> robinslight_start
-chmod +x robinslight_start
+touch robinslight_start.sh
+echo "cd /home/pi/wkspc/rpi-peripheral && sudo ./status red &" >> robinslight_start.sh
+echo "cd /home/pi/wkspc/rpi-peripheral && sudo ./bleconfig" >> robinslight_start.sh
+echo "cd /home/pi/wkspc/rpi-peripheral/server && sudo npm start" >> robinslight_start.sh
+chmod +x robinslight_start.sh
+
+cd ~
+sudo vi /etc/rc.local
 ```
- 
+
+Inside rc.local comment out all lines before exit 0,  and add the following line right before exit 0:
+```
+sudo sh '/home/pi/robinslight_start.sh'
+```
+and then save and exit the file with :wq!
+and run the following:
+```
+sudo chown root /etc/rc.local
+sudo chmod 755 /etc/rc.local
+```
 ## 3. Setup Node & NPM
 Run `uname -m` in terminal and you'll see what type of processor this Pi is equipped with.
 

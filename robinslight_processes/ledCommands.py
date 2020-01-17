@@ -138,7 +138,9 @@ def fadeEffect(**kwargs):
 		stepSize = list(map(lambda x: float(x)/numSteps, deltas))
 
 		for stepIdx in range(numSteps):
-			currColor = [sum(components) for components in zip(currColor, stepSize)]
+
+
+			currColor = [max(0,sum(components)) for components in zip(currColor, stepSize)]
 
 			for comp in currColor:
 				if comp < 0:

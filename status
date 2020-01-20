@@ -1,1 +1,1 @@
-sudo python robinslight_processes/status_indicator.py $1
+sudo python robinslight_processes/status_indicator.py $1 $2

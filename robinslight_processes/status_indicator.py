@@ -16,6 +16,8 @@ if __name__ == '__main__':
     targetPixels = sys.argv[2]
     if targetPixels == None:
         targetPixels = STATUS_PIXELS
+    else:
+        targetPixels = int(targetPixels)
 
 
     if colorName == None:

@@ -24,10 +24,13 @@ To download RobinsLight, you'll need to clone the repository and put it in the p
 cd ~
 mkdir wkspc
 cd wkspc
+git config --global user.email ucb.azaad@gmail.com
+git config --global user.name "Azaad"
+git config --global credential.helper store
 git clone https://github.com/ajaymerchia/rpi-peripheral.git
 ```
 
-For authentication, use `username: robinslight` and `password: robinpooh2019`. If this doesn't work, just use your personal GitHub login.
+For authentication, use `username: robinslight` and `password: RobinsLight.2020`.
 
 You also need to setup the run time script.
 
@@ -40,7 +43,7 @@ echo "cd /home/pi/wkspc/rpi-peripheral/server && sudo npm start" >> robinslight_
 chmod +x robinslight_start.sh
 
 cd ~
-sudo vi /etc/rc.local
+sudo nano /etc/rc.local
 ```
 
 Inside rc.local comment out all lines before exit 0,  and add the following line right before exit 0:
@@ -62,7 +65,7 @@ Run `uname -m` in terminal and you'll see what type of processor this Pi is equi
 Download the right package here: [https://nodejs.org/dist/v11.0.0/](https://nodejs.org/dist/v11.0.0/). Download the appropriate `.tar.gz` file based on architecture.
 > Pi3 uses Linux Binaries (ARM) v7.0
 > Pi Zero W uses Linux Binaries (ARM) v6.0l
-> 
+>
 
 Decompress the file using the archive utility, then install it using **FROM WITHIN THE DECOMPRESSED DIRECTORY**
 ```
@@ -99,29 +102,29 @@ To properly interface with the LED Strip and a Real Time Clock, please wire the 
 							○○
 
 							○○ [to LED.DQ]
-							○○ 
-							○○
-							○○
-							○○
-							
 							○○
 							○○
 							○○
 							○○
+
 							○○
-							
+							○○
+							○○
+							○○
+							○○
+
 							○○
 							○○
 							○○
 							○○
 	[to RTC.GND, LED.GND]	○○
-							
-							
+
+
 If everything is configured properly, on system boot, you should see a red light emanate from the clock, and (maybe) the LED strip will flash for a few milliseconds.
 
 **If the Raspberry Pi refuses to boot, you probably have a loose connection. When developing, the ground wire was found to be the most problematic. Try better isolating this wire.**
 
-## 5. Setup Real-Time Clock 
+## 5. Setup Real-Time Clock
 ### Enable I2C Hardware Interfaces
 Unfortunately Raspberry Pis limit the out-of-the-box hardware options.
 
@@ -139,7 +142,7 @@ Run `sudo nano /boot/config.txt` to modify these options. Find the lines that re
 #### Giving the Kernel Access to the Clock
 First we check to see if the GPIO is wired correctly. Run `sudo i2cdetect -y 1`. If the GPIO was properly wired, you should see the number 68 in the terminal response.
 
-Now we're going to load the clock hardware into the kernel using `sudo modprobe rtc-ds1307`. 
+Now we're going to load the clock hardware into the kernel using `sudo modprobe rtc-ds1307`.
 
 Now we have to access the kernel directly to configure the clock. Run the following commands with super user privileges.
 
@@ -151,11 +154,11 @@ exit
 #### Synchronizing the Clock
 To check if the clock is operational, run `sudo hwclock -r`. You should get a date sometime near January 1st, 2000 if the clock is brand new. The value doesn't really matter.
 
-**Make sure you have a working internet connection.** Run `date` to sync the Raspberry Pi with the internet's clock. Then, run `sudo hwclock -w` to store this correct time in the clock module. 
+**Make sure you have a working internet connection.** Run `date` to sync the Raspberry Pi with the internet's clock. Then, run `sudo hwclock -w` to store this correct time in the clock module.
 
 Verify `sudo hwclock -r` returns the true time.
 
-To make sure the time is correct each time the device boots, we have to edit 2 config files. 
+To make sure the time is correct each time the device boots, we have to edit 2 config files.
 1. Run `sudo nano /etc/modules`, then add `rtc-ds1307` to the end of the file (after `i2c-dev`).
 2. Run `sudo nano /etc/rc.local`, then, at the end of the file, before `exit 0`, add the following lines of code.
 ```
@@ -178,9 +181,9 @@ hdmi_force_edid_audio=1
 
 ## 7. Preparing Node Module Support (Start with Item 7)
 
-So this is going to sound absolutely f*cking ridiculous and it kept me up until 5:45am, but for some reason the BLE library does not compile on the Pi Zero W architecture. To Resolve: 
+So this is going to sound absolutely f*cking ridiculous and it kept me up until 5:45am, but for some reason the BLE library does not compile on the Pi Zero W architecture. To Resolve:
 1. Run `sudo shutdown now` on the Raspberry Pi Zero W, and remove the MicroSD Card.
-2. Insert the MicroSD Card into a Raspberry Pi3, navigate to `wkspc/rpi-peripheral/server` and execute `rm -rf node_modules`. 
+2. Insert the MicroSD Card into a Raspberry Pi3, navigate to `wkspc/rpi-peripheral/server` and execute `rm -rf node_modules`.
 3. Run `npm install`. It should install a working copy of `bleno`.
 4. Validate that the Pi3 architecture compiles by running `npm start`. The application should launch
 5. Run `sudo shutdown now` and transfer the MicroSD card back to the Raspberry Pi Zero W. Disconnect and reconnect it to its power source

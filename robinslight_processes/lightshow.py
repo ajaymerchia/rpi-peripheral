@@ -3,20 +3,22 @@ import pickle
 import sys
 import time
 
+targetFilePath = "../data/{0}.rl"
+
 if __name__ == '__main__':
     targetProgram = sys.argv[1]
     sent = sys.argv[2]
-    transmissionLag = 0
-    if sent:
-        transmissionLag = time.time() - float(sys.argv[2])
-        print("took {0}s to transmit".format(transmissionLag))
 
-    targetFile = "../data/{0}.rl".format(targetProgram)
-
+    targetFile = targetFilePath.format(targetProgram)
     r = open(targetFile, "rb+")
     blobLoaded = r.read().strip()
     lightshow = pickle.loads(blobLoaded)
     print(lightshow[-5:])
+
+    transmissionLag = 0
+    if sent:
+        transmissionLag = time.time() - float(sys.argv[2])
+        print("took {0}s to transmit".format(transmissionLag))
 
     offset = 0
     startIdx = 0

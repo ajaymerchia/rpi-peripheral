@@ -7,6 +7,7 @@
 # to terminate along with an error message.
 import time
 import sys
+import constants
 
 LOG = False
 
@@ -21,7 +22,10 @@ def addTo(compilerSummary, color, postWait):
 
 def offEffect(**kwargs):
 	duration = kwargs.get('duration', None)
-	summary = kwargs.get('summary', [])
+	interval = kwargs.get('interval', 100)
+	timestamp = kwargs.get('timestamp', -1)
+	minifiedSummary = kwargs.get('minifiedSummary', [])
+	maxifiedSummary = kwargs.get('maxifiedSummary', [])
 
 	if duration is None:
 		return True, 'invalid duration.'
@@ -29,14 +33,17 @@ def offEffect(**kwargs):
 	if LOG:
 		print("OFF")
 		print(duration)
-	staticEffect(duration=duration, colors=[0], summary=summary)
+	staticEffect(timestamp=timestamp, duration=duration, colors=[0], minifiedSummary=minifiedSummary, maxifiedSummary=maxifiedSummary, interval=interval)
 
 	return False, 'success.'
 
 def staticEffect(**kwargs):
 	duration = kwargs.get('duration', None)
 	color = kwargs.get('colors', None)[0]
-	summary = kwargs.get('summary', [])
+	interval = kwargs.get('interval', 100)
+	timestamp = kwargs.get('timestamp', -1)
+	minifiedSummary = kwargs.get('minifiedSummary', [])
+	maxifiedSummary = kwargs.get('maxifiedSummary', [])
 
 	if duration is None:
 		return True, 'invalid duration.'
@@ -50,9 +57,16 @@ def staticEffect(**kwargs):
 	# TODO execute effect
 	# executeColor(rgb(color))
 	# wait(duration)
-	addTo(summary, rgb(color), duration)
-	# Sets the color to the specified color and then waits for that duration to expire
+	addTo(minifiedSummary, rgb(color), duration)
 
+	if constants.MAXIFY:
+		endstamp = timestamp + duration
+		if timestamp != 0:
+			timestamp = timestamp + (interval - (timestamp % interval))
+		while timestamp < endstamp:
+			maxifiedSummary.append((rgb(color), interval))
+			timestamp += interval
+	# Sets the color to the specified color and then waits for that duration to expire
 
 	return False, 'success.'
 
@@ -60,7 +74,11 @@ def strobeEffect(**kwargs):
 	duration = kwargs.get('duration', None)
 	frequency = kwargs.get('frequency', None)
 	colors = kwargs.get('colors', None)
-	summary = kwargs.get('summary', [])
+	interval = kwargs.get('interval', 100)
+	timestamp = kwargs.get('timestamp', -1)
+	minifiedSummary = kwargs.get('minifiedSummary', [])
+	maxifiedSummary = kwargs.get('maxifiedSummary', [])
+
 	if duration is None:
 		return True, 'invalid duration.'
 	elif colors is None:
@@ -84,11 +102,22 @@ def strobeEffect(**kwargs):
 		colorUsed = rgb(colors[colorIdx])
 		# executeColor(colorUsed)
 		if swap != numSwitches - 1:
-			addTo(summary, colorUsed, frequency)
+			addTo(minifiedSummary, colorUsed, frequency)
 			# wait(frequency)
 		else:
-			addTo(summary, colorUsed, residual)
+			addTo(minifiedSummary, colorUsed, residual)
 			# wait(residual)
+
+	if constants.MAXIFY:
+		startstamp = timestamp
+		endstamp = startstamp + duration
+		if timestamp != 0:
+			timestamp = timestamp + (interval - (timestamp % interval))
+		while timestamp < endstamp:
+			perc = (timestamp - startstamp) / duration
+			colorIdx = int(perc * numSwitches) % maxIdx
+			maxifiedSummary.append((rgb(colors[colorIdx]), interval))
+			timestamp += interval
 
 	# Cycles through the colors for the duration of the effect, changing every FREQUENCY milliseconds until the
 
@@ -97,7 +126,10 @@ def strobeEffect(**kwargs):
 def fadeEffect(**kwargs):
 	duration = kwargs.get('duration', None)
 	colors = kwargs.get('colors', None)
-	summary = kwargs.get('summary', [])
+	minifiedSummary = kwargs.get('minifiedSummary', [])
+	maxifiedSummary = kwargs.get('maxifiedSummary', [])
+	timestamp = kwargs.get('timestamp', -1)
+	interval = kwargs.get('interval', 100)
 
 	if duration is None:
 		return True, 'invalid duration.'
@@ -147,7 +179,7 @@ def fadeEffect(**kwargs):
 					print("ERROR\n\n\n\n\n\n\n")
 					print(i)
 					print(stepSize, stepIdx, numSteps)
-					print(summary[numSteps:])
+					print(minifiedSummary[numSteps:])
 					print(map(rgb, transitions[i]))
 					sys.exit(-1)
 
@@ -155,7 +187,27 @@ def fadeEffect(**kwargs):
 			timeRequested += durationPerStep
 			# executeColor(exportColor)
 			# wait(durationPerStep)
-			addTo(summary, exportColor, durationPerStep)
+			addTo(minifiedSummary, exportColor, durationPerStep)
+
+	if constants.MAXIFY:
+		startstamp = timestamp
+		endstamp = startstamp + duration
+		if timestamp != 0:
+			timestamp = timestamp + (interval - (timestamp % interval))
+		while timestamp < endstamp:
+			perc = (timestamp - startstamp) / duration
+			transIdx = int(perc * len(transitions))
+			
+			startColor, endColor = rgb(transitions[transIdx][0]), rgb(transitions[transIdx][1])
+			temp_start = startstamp + (transIdx * (duration / len(transitions)))
+			temp_end = min(endstamp, startstamp + ((transIdx + 1) * (duration / len(transitions))))
+			perc_color_trans = (timestamp - temp_start) / (temp_end - temp_start)
+
+			r = int(startColor[0] + ((endColor[0] - startColor[0]) * perc_color_trans))
+			g = int(startColor[1] + ((endColor[1] - startColor[1]) * perc_color_trans))
+			b = int(startColor[1] + ((endColor[1] - startColor[1]) * perc_color_trans))
+			maxifiedSummary.append(((r, g, b), interval))
+			timestamp += interval
 
 	print("Fading effect scheduled to take up {0} of {1} allocation".format(timeRequested, duration))
 

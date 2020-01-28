@@ -13,26 +13,42 @@ def checksum(obj):
     return ' '.join(map(str, obj))
 
 if __name__ == '__main__':
-    targetProgram = sys.argv[1]
-    targetFile = "../data/{0}.rl".format(targetProgram)
-    minified = open(targetFile + ".min", "r")
-    minified = minified.read().strip()
+    targetProgramPath = sys.argv[1]
+    targetFileMinified = "../data/{0}.rl".format(targetProgramPath)
+    targetFileMaxified = "../data/{0}.rlmax".format(targetProgramPath)
+
+    instrs = open(targetFileMinified + ".min", "r")
+    instrs = instrs.read().strip()
     # print(minified)
 
-    compiledLines = []
-    error = lexer.execInstructions(minified, compiledLines)
+    compiledLinesMinified = []
+    compiledLinesMaxified = []
+    error = lexer.execInstructions(instrs, minifiedSummary=compiledLinesMinified, maxifiedSummary=compiledLinesMaxified)
     print(error)
 
     print("LEXER COMPLETE\n\n")
-    for line in compiledLines:
-        print(line)
+    # for line in compiledLinesMinified:
+    #     print(line)
+
+    # for line in compiledLinesMaxified:
+    #     print(line)
 
     # cs1 = checksum(compiledLines)
-    compiledBlob = pickle.dumps(compiledLines, protocol=2)
-    w = open(targetFile, "wb+")
-    w.write(compiledBlob)
-    w.close()
+    compiledBlobMinified = pickle.dumps(compiledLinesMinified, protocol=2)
+    compiledBlobMaxified = pickle.dumps(compiledLinesMaxified, protocol=2)
+    
+    wMin = open(targetFileMinified, "wb+")
+    wMin.write(compiledBlobMinified)
+    wMin.close()
 
-    print("Instructions:\t{0}".format(len(compiledLines)))
-    print("Bytes:\t\t{0}".format(len(compiledBlob)))
-    print("Written to {0}".format(targetFile))
+    wMax = open(targetFileMaxified, "wb+")
+    wMax.write(compiledBlobMaxified)
+    wMax.close()
+
+    print("Minified Instructions:\t{0}".format(len(compiledLinesMinified)))
+    print("Minified Bytes:\t\t{0}".format(len(compiledBlobMinified)))
+    print("Minified Written to {0}".format(targetFileMinified))
+
+    print("Maxified Instructions:\t{0}".format(len(compiledLinesMaxified)))
+    print("Maxified Bytes:\t\t{0}".format(len(compiledBlobMaxified)))
+    print("Maxified Written to {0}".format(targetFileMaxified))

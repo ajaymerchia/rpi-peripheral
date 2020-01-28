@@ -38,9 +38,6 @@ PlayerCharacteristic.prototype.onWriteRequest = function(data, offset, withoutRe
   } else {
     console.log('PlayerCharacteristic - onWriteRequest: FAIL = ' + "Unknown command sent");
   }
-
-
-
 };
 
 PlayerCharacteristic.prototype.onSubscribe = function(maxValueSize, updateValueCallback) {

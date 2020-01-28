@@ -2,6 +2,7 @@ var bleno = require('bleno');
 var util = require('util');
 const Constants = require('../../../constants')
 var BlenoCharacteristic = bleno.Characteristic;
+const dispatcher = require('../../../dispatcher')
 
 var PingPongCharacteristic = function() {
  PingPongCharacteristic.super_.call(this, {
@@ -18,7 +19,7 @@ util.inherits(PingPongCharacteristic, BlenoCharacteristic);
 
 PingPongCharacteristic.prototype.onReadRequest = function(offset, callback) {
   console.log('PingPongCharacteristic - onReadRequest: value = ' + this._value.toString());
-
+  dispatcher.runPythonScript("pingpong_check.py", ["MAIN", sent]);
   callback(this.RESULT_SUCCESS, this._value);
 };
 
@@ -26,13 +27,13 @@ PingPongCharacteristic.prototype.onWriteRequest = function(data, offset, without
   this._value = data;
 
   console.log('PingPongCharacteristic - onWriteRequest: value = ' + this._value.toString());
-
+  
   if (this._updateValueCallback) {
     console.log('PingPongCharacteristic - onWriteRequest: notifying');
 
     this._updateValueCallback(this._value);
   }
-
+  dispatcher.runPythonScript("pingpong_check.py", ["MAIN", sent]);
   callback(this.RESULT_SUCCESS);
 };
 

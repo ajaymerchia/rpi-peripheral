@@ -19,7 +19,12 @@ util.inherits(PingPongCharacteristic, BlenoCharacteristic);
 
 PingPongCharacteristic.prototype.onReadRequest = function(offset, callback) {
   console.log('PingPongCharacteristic - onReadRequest: value = ' + this._value.toString());
-  dispatcher.runPythonScript("pingpong_check.py", ["MAIN", sent]);
+  dispatcher.runPythonScript("status_indicator.py", ["pink", 45]);
+
+  setTimeout(()=> {
+    dispatcher.runPythonScript("status_indicator.py", ["green"]);
+  }, 3000)
+
   callback(this.RESULT_SUCCESS, this._value);
 };
 
@@ -27,13 +32,12 @@ PingPongCharacteristic.prototype.onWriteRequest = function(data, offset, without
   this._value = data;
 
   console.log('PingPongCharacteristic - onWriteRequest: value = ' + this._value.toString());
-  
+
   if (this._updateValueCallback) {
     console.log('PingPongCharacteristic - onWriteRequest: notifying');
 
     this._updateValueCallback(this._value);
   }
-  dispatcher.runPythonScript("pingpong_check.py", ["MAIN", sent]);
   callback(this.RESULT_SUCCESS);
 };
 

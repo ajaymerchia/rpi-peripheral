@@ -13,12 +13,9 @@ STATUS_PIXELS = 5
 
 if __name__ == '__main__':
     colorName = sys.argv[1]
-    targetPixels = sys.argv[2]
-    if targetPixels == None:
-        targetPixels = STATUS_PIXELS
-    else:
-        targetPixels = int(targetPixels)
-
+    targetPixels = STATUS_PIXELS
+    if len(sys.argv) > 2:
+        targetPixels = int(sys.argv[2])
 
     if colorName == None:
         raise Exception("Must specify color name")

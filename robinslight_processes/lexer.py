@@ -8,23 +8,23 @@ import re
 import constants
 
 # Execute the specified input sequence (formatted as string)
-def execInstructions(instructions, summary=[]):
+def execInstructions(instructions, minifiedSummary=[], maxifiedSummary=[], interval=100):
 	if constants.VALIDATE:
 		inputValid, err = validateInput(instructions)
 		if not inputValid:
 			return 'Bad instruction --> ' + err
 
 	for line in instructions.split('\n'):
-		terminate, err = execLine(line, summary)
+		terminate, err = execLine(line, minifiedSummary, maxifiedSummary, interval)
 		if terminate:
 			return 'Terminated --> ' + err
 	return 'Instructions completed.'
 
 # Execute a given line
-def execLine(line, summary):
+def execLine(line, minifiedSummary, maxifiedSummary, interval):
 	timestamp, action, duration, frequency, colorSeq, _ = re.match(constants.INSTRUCTION_FORMAT, line).groups()
 	colors = re.findall(constants.COLOR_FORMAT, colorSeq)
-	return constants.FUNCTIONS[action](duration=int(duration), frequency=int(frequency), colors=[int(c) for c in colors], summary=summary)
+	return constants.FUNCTIONS[action](timestamp=int(timestamp), duration=int(duration), frequency=int(frequency), colors=[int(c) for c in colors], minifiedSummary=minifiedSummary, maxifiedSummary=maxifiedSummary, interval=interval)
 
 # Validate a given instruction sequence
 def validateInput(instructions):
@@ -49,7 +49,6 @@ input1 = "0:toff:1750:0::\n\
 55833:toff:299:0::\n\
 56133:strb:10000:500:16777215,0,:\n\
 66133:kill:0:0::"
-
 
 if __name__ == '__main__':
 	err = execInstructions(input1)

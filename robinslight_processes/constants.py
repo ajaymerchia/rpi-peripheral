@@ -20,3 +20,6 @@ FUNCTIONS = {'toff': led.offEffect, 'stat': led.staticEffect, 'strb': led.strobe
 
 # Validate commands before execution (validation necessary during testing, during performance set to false.)
 VALIDATE = True
+
+# Create the maxified format
+MAXIFY = True

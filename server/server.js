@@ -23,8 +23,10 @@ function setIndicator(color) {
 
 bleno.on('stateChange', function(state) {
   console.log('on -> stateChange: ' + state);
+  bleno.name = process.env['BLENO_DEVICE_NAME'] = 'robinsPi'
 
   if (state === 'poweredOn') {
+    console.log(`Powered on as ${bleno.name}`);
     for (serviceID of allServiceIDs) {
       console.log(`Launching ${serviceIDtoService[serviceID].constructor.name}(${serviceID})`);
       bleno.startAdvertising(bleno.name, [serviceID]);
@@ -47,10 +49,10 @@ bleno.on('advertisingStart', function(error) {
   if (!error) {
     console.log(`Advertising as ${process.env.BLENO_DEVICE_NAME}`)
     bleno.setServices(allServices);
-    
+
     // indicate that services are up and running with a yellow indicator light
     setIndicator("blue")
-    
+
   }
 });
 

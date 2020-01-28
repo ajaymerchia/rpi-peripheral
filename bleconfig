@@ -1,4 +1,4 @@
 sudo systemctl stop bluetooth
 # sudo systemctl status bluetooth
 sudo hciconfig hci0 up
-# TODO: Run node test.js on bleno to activate BLE for Pi Zero
+# TODO: Run node test.js on bleno to activate BLE for Pi Zero # DONE: Resolved with bleno_test.js

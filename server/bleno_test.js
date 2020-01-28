@@ -2,10 +2,6 @@ var util = require('util');
 
 var bleno = require('./index');
 
-var os = require('os');
-const child     = require('child_process');
-const spawn     = child.spawn
-
 
 var BlenoPrimaryService = bleno.PrimaryService;
 var BlenoCharacteristic = bleno.Characteristic;
@@ -202,25 +198,32 @@ bleno.on('disconnect', function(clientAddress) {
   console.log('on -> disconnect, client: ' + clientAddress);
 });
 
+var launched = false
+function launchRobinsLight() {
+  if (launched) { return }
+  launched = true
+  console.log("Launching RobinsLightServer");
+  var bashScript = "cd /home/pi/wkspc/rpi-peripheral/server && sudo npm start"
+
+  const exec = require('child_process').exec;
+  var rlight = exec(bashScript, (error, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    if (error !== null) {
+      console.log(`exec error: ${error}`);
+    }
+  });
+  rlight.stdout.pipe(process.stdout);
+  rlight.stderr.pipe(process.stdout);
+  process.exit(0)
+}
+
 bleno.on('rssiUpdate', function(rssi) {
   console.log('on -> rssiUpdate: ' + rssi);
-
-  console.log("Launching RobinsLightServer");
-  const bashScript = "cd /home/pi/wkspc/rpi-peripheral/server && sudo npm start"
-  console.log(bashScript);
-
-  child = spawn("bash", [bashScript])
-  child.stdout.setEncoding('utf8');
-    child.stdout.on('data', (chunk) => {
-      console.log(`[bash] ${chunk}`);
-    });
-    // since these are streams, you can pipe them elsewhere
-    child.stderr.pipe(process.stdout);
-    child.on('close', (code) => {
-      console.log(`child process [bash] exited with code ${code}`);
-    });
+  launchRobinsLight();
 
 });
+
 //////////////////////////////////////
 
 bleno.on('mtuChange', function(mtu) {

@@ -19,7 +19,7 @@ var ShutdownCharacteristic = function() {
 
 ShutdownCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   var shutdown = null
-  if (Constants.auth === data) {
+  if (Constants.auth === data.toString()) {
     shutdown = dispatcher.runPythonScript("status_indicator.py", ["clear", 45]);
     shutdown.on('close', (code) => {
       console.log(`child process exited with code ${code}`);

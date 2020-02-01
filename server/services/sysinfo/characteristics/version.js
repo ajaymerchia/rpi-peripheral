@@ -21,13 +21,19 @@ CheckVersionCharacteristic.prototype.onReadRequest = function(offset, callback) 
     totalversion.stdout.on('data', (chunk) => {
         version += chunk
     });
-    
+
     this._value = new Buffer(JSON.stringify({
       'version' : version
     }));
   }
 
   callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
+};
+
+
+CheckVersionCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
+  spawn("git", ["pull", "origin", "master"])
+  callback(this.RESULT_SUCCESS);
 };
 
 util.inherits(CheckVersionCharacteristic, BlenoCharacteristic);

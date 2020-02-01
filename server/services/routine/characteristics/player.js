@@ -3,6 +3,7 @@ var util = require('util');
 const Constants = require('../../../constants')
 const io = require('../../../io')
 const dispatcher = require('../../../dispatcher')
+var currShow = null;
 
 var BlenoCharacteristic = bleno.Characteristic;
 
@@ -33,7 +34,12 @@ PlayerCharacteristic.prototype.onWriteRequest = function(data, offset, withoutRe
   }
 
   if (cmd === "START") {
-    dispatcher.runPythonScript("lightshow.py", ["MAIN", sent])
+    currShow = dispatcher.runPythonScript("lightshow.py", ["MAIN", sent])
+    callback(this.RESULT_SUCCESS);
+  } else if (cmd = "STOP" && currShow != null) {
+    child.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
     callback(this.RESULT_SUCCESS);
   } else {
     console.log('PlayerCharacteristic - onWriteRequest: FAIL = ' + "Unknown command sent");

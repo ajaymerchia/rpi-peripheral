@@ -16,4 +16,5 @@ exports.runPythonScript = (filename, cmdlineargs) => {
   child.on('close', (code) => {
     console.log(`child process [python ${filename}] exited with code ${code}`);
   });
+  return child
 }

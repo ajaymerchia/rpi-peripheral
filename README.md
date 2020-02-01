@@ -24,10 +24,10 @@ To download RobinsLight, you'll need to clone the repository and put it in the p
 cd ~
 mkdir wkspc
 cd wkspc
-git config --global user.email ucb.azaad@gmail.com
-git config --global user.name "Azaad"
-git config --global credential.helper store
-git clone https://github.com/ajaymerchia/rpi-peripheral.git
+sudo git config --global user.email ucb.azaad@gmail.com
+sudo git config --global user.name "Azaad"
+sudo git config --global credential.helper store
+sudo git clone https://github.com/ajaymerchia/rpi-peripheral.git
 ```
 
 For authentication, use `username: robinslight` and `password: RobinsLight.2020`.
@@ -36,21 +36,14 @@ You also need to setup the run time script.
 
 ```
 cd ~
-touch robinslight_start.sh
-echo "cd /home/pi/wkspc/rpi-peripheral && sudo ./status red &" >> robinslight_start.sh
-echo "cd /home/pi/wkspc/rpi-peripheral && sudo ./bleconfig" >> robinslight_start.sh
-echo "cd /home/pi/wkspc/rpi-peripheral/server && sudo npm start" >> robinslight_start.sh
-chmod +x robinslight_start.sh
-
-cd ~
 sudo nano /etc/rc.local
 ```
 
 Inside rc.local comment out all lines before exit 0,  and add the following line right before exit 0:
 ```
-sudo sh '/home/pi/robinslight_start.sh'
+sudo sh '/home/pi/wkspc/rpi-peripheral/robinslight_start.sh'
 ```
-and then save and exit the file with :wq!
+and then save and exit the file with `:wq!`
 and run the following:
 ```
 sudo chown root /etc/rc.local

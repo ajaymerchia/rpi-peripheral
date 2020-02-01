@@ -41,7 +41,7 @@ CheckVersionCharacteristic.prototype.onReadRequest = function(offset, callback) 
 
 
 CheckVersionCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
-  if (Constants.auth === data) {
+  if (Constants.auth === data.toString()) {
     console.log("Updating code from origin...")
     spawn("git", ["pull", "origin", "master"])
   } else {

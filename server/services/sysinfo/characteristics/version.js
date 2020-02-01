@@ -4,10 +4,13 @@ var util = require('util');
 const Constants = require('../../../constants')
 var BlenoCharacteristic = bleno.Characteristic;
 
+const child = require('child_process');
+const spawn = child.spawn
+
 var CheckVersionCharacteristic = function() {
   CheckVersionCharacteristic.super_.call(this, {
     uuid: Constants.uuidFor(module.filename),
-    properties: ['read'],
+    properties: ['read', 'write'],
   });
 
  this._value = new Buffer(0);

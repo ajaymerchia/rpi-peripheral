@@ -1,6 +1,7 @@
 // see https://www.uuidgenerator.net for UUIDs
 // Modify generated IDs so that services have IDs with 0 endings and their characteristics enumerate 1-9a-f
 module.exports = {
+  auth: '25bd390c-65b7-4ce1-b09e-af670db83c12',
   uuids: {
     pingpong: {
       id: "8e66b5c3-9851-4a29-8252-295ad263f4b0",
@@ -11,9 +12,7 @@ module.exports = {
     sysinfo: {
       id: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb00',
       characteristics: {
-        memory: {id: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb01'},
-        uptime: {id: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb02'},
-        loadaverage: {id: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb03'},
+        shutdown: {id: 'c5bc539e-46f3-435c-84f6-e8989449d3d6'},
         version: {id: '1702b9e8-bbce-4660-8fc9-a978e314d19c'},
       }
     },

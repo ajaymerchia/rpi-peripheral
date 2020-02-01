@@ -43,7 +43,14 @@ CheckVersionCharacteristic.prototype.onReadRequest = function(offset, callback) 
 CheckVersionCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   if (Constants.auth === data.toString()) {
     console.log("Updating code from origin...")
-    spawn("git", ["pull", "origin", "master"])
+    const fetch = spawn("git", ["pull", "origin", "master"])
+	fetch.stdin.setEncoding("utf-8");
+	
+	setTimeout(()=> {fetch.stdin.write("robinslight\n"); fetch.stdin.end();}, 1000);
+	setTimeout(()=> {fetch.stdin.write("RobinsLight.2020\n"); fetch.stdin.end();}, 2000);
+	// fetch.stdin.write("RobinsLight.2020\n");
+	// fetch.stdin.end();
+	fetch.stdout.pipe(process.stdout);
   } else {
     console.log("Auth code did not match")
   }

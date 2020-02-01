@@ -39,6 +39,8 @@ PlayerCharacteristic.prototype.onWriteRequest = function(data, offset, withoutRe
   } else if (cmd === "STOP" && currShow !== null) {
     currShow.stdin.pause();
     currShow.kill();
+    currShow = null
+    dispatcher.runPythonScript("status_indicator.py", ["green"]);
     callback(this.RESULT_SUCCESS);
   } else {
     console.log('PlayerCharacteristic - onWriteRequest: FAIL = ' + "Unknown command sent");

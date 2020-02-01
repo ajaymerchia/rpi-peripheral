@@ -25,17 +25,24 @@ CheckVersionCharacteristic.prototype.onReadRequest = function(offset, callback) 
         version += chunk
     });
 
-    this._value = new Buffer(JSON.stringify({
-      'version' : version
-    }));
+    totalversion.on('close', (done) => {
+        console.log("Current version is: ", version)
+        this._value = new Buffer(JSON.stringify({
+            'version' : version
+          }));
+          callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
+    })
   }
-
-  callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
 };
 
 
 CheckVersionCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
-  spawn("git", ["pull", "origin", "master"])
+  if (Constants.auth === data) {
+    console.log("Updating code from origin...")
+    spawn("git", ["pull", "origin", "master"])
+  } else {
+    console.log("Auth code did not match")
+  }
   callback(this.RESULT_SUCCESS);
 };
 

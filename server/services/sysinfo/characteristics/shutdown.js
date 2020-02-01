@@ -26,6 +26,9 @@ ShutdownCharacteristic.prototype.onWriteRequest = function(data, offset, without
       callback(this.RESULT_SUCCESS);
       spawn("shutdown", ["now"])
     });
+  } else {
+      console.log("Failed to validate auth for shutdown request");
+      callback(this.RESULT_SUCCESS);
   }
 
 };

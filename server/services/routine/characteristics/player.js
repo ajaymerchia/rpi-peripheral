@@ -37,9 +37,8 @@ PlayerCharacteristic.prototype.onWriteRequest = function(data, offset, withoutRe
     currShow = dispatcher.runPythonScript("lightshow.py", ["MAIN", sent])
     callback(this.RESULT_SUCCESS);
   } else if (cmd === "STOP" && currShow !== null) {
-    child.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
-    });
+    currShow.stdin.pause();
+    currShow.kill();
     callback(this.RESULT_SUCCESS);
   } else {
     console.log('PlayerCharacteristic - onWriteRequest: FAIL = ' + "Unknown command sent");

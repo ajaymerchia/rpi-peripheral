@@ -14,6 +14,7 @@ module.exports = {
         memory: {id: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb01'},
         uptime: {id: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb02'},
         loadaverage: {id: 'ff51b30e-d7e2-4d93-8842-a7c4a57dfb03'},
+        version: {id: '1702b9e8-bbce-4660-8fc9-a978e314d19c'},
       }
     },
     routine: {

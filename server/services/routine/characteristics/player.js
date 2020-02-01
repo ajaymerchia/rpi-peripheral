@@ -36,7 +36,7 @@ PlayerCharacteristic.prototype.onWriteRequest = function(data, offset, withoutRe
   if (cmd === "START") {
     currShow = dispatcher.runPythonScript("lightshow.py", ["MAIN", sent])
     callback(this.RESULT_SUCCESS);
-  } else if (cmd = "STOP" && currShow != null) {
+  } else if (cmd === "STOP" && currShow !== null) {
     child.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
     });

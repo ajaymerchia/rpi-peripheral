@@ -28,9 +28,14 @@ CheckVersionCharacteristic.prototype.onReadRequest = function(offset, callback) 
     totalversion.on('close', (done) => {
         version = version.split("\n")[0]
         console.log("Current version is: ", version)
-        this._value = version
-        callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
+        this._value = new Buffer(version);
+	console.log("returning");
+	console.log(this._value);
+       callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
     })
+   // this._value = Buffer.from("fake", "utf8");
+   // callback(this.RESULT_SUCCESS, this._value)
+
   }
 };
 

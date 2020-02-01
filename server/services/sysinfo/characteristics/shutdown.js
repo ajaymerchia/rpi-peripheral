@@ -11,7 +11,7 @@ const spawn = child.spawn
 var ShutdownCharacteristic = function() {
     ShutdownCharacteristic.super_.call(this, {
     uuid: Constants.uuidFor(module.filename),
-    properties: ['read'],
+    properties: ['write'],
   });
 
  this._value = new Buffer(0);

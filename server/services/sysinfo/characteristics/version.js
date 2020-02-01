@@ -26,11 +26,10 @@ CheckVersionCharacteristic.prototype.onReadRequest = function(offset, callback) 
     });
 
     totalversion.on('close', (done) => {
+        version = version.split("\n")[0]
         console.log("Current version is: ", version)
-        this._value = new Buffer(JSON.stringify({
-            'version' : version
-          }));
-          callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
+        this._value = version
+        callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
     })
   }
 };

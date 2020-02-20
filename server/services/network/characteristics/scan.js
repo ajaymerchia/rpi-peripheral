@@ -22,6 +22,7 @@ util.inherits(NetworkScanCharacteristic, BlenoCharacteristic);
 
 
 NetworkScanCharacteristic.prototype.onReadRequest = function(offset, callback) {
+  console.log("wifi scan request recieved")
 
   var commaSeparatedNetworkList = "";
   const fetch = spawn("python", ['/home/pi/wkspc/rpi-peripheral/robinslight_processes/essidExtractor.py'])

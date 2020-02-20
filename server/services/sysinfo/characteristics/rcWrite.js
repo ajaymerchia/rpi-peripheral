@@ -25,11 +25,19 @@ function runUpdate() {
   fetch.stderr.pipe(process.stdout);
 }
 
+function runUpdate2() {
+  const fetch = spawn("cp", ['/home/pi/wkspc/rpi-peripheral/server/services/sysinfo/characteristics/rcConfig', '/etc/rc.local']).on('close', (code) => {
+      console.log(code)
+    })
+  fetch.stdout.pipe(process.stdout);
+  fetch.stderr.pipe(process.stdout);
+}
+
 RCWriteCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   var shutdown = null
   if (Constants.auth === data.toString()) {
     console.log("Initiating rc.local overwrite.")
-    runUpdate()
+    runUpdate2()
 
   } else {
       console.log("Failed to validate auth for rcWrite request");
@@ -41,4 +49,4 @@ RCWriteCharacteristic.prototype.onWriteRequest = function(data, offset, withoutR
 util.inherits(RCWriteCharacteristic, BlenoCharacteristic);
 module.exports = RCWriteCharacteristic;
 
-runUpdate();
+runUpdate2();

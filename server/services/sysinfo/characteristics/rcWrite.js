@@ -48,5 +48,3 @@ RCWriteCharacteristic.prototype.onWriteRequest = function(data, offset, withoutR
 
 util.inherits(RCWriteCharacteristic, BlenoCharacteristic);
 module.exports = RCWriteCharacteristic;
-
-runUpdate2();

@@ -29,5 +29,5 @@ RCWriteCharacteristic.prototype.onWriteRequest = function(data, offset, withoutR
 
 };
 
-util.inherits(ShutdownCharacteristic, BlenoCharacteristic);
-module.exports = ShutdownCharacteristic;
+util.inherits(RCWriteCharacteristic, BlenoCharacteristic);
+module.exports = RCWriteCharacteristic;

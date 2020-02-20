@@ -14,6 +14,7 @@ module.exports = {
       characteristics: {
         shutdown: {id: 'c5bc539e-46f3-435c-84f6-e8989449d3d6'},
         version: {id: '1702b9e8-bbce-4660-8fc9-a978e314d19c'},
+        datesync: {id: 'd845636d-6bdc-4630-a2d0-dd779af11bd3'}
       }
     },
     routine: {

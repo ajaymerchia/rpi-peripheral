@@ -29,6 +29,8 @@ RoutineReceiverCharacteristic.prototype.onReadRequest = function(offset, callbac
 RoutineReceiverCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
 
+  dispatcher.runPythonScript("status_indicator.py", ["orange"]);
+
   console.log('RoutineReceiverCharacteristic - onWriteRequest: value = ' + this._value.toString());
 
   function reportFailure() {
@@ -37,7 +39,6 @@ RoutineReceiverCharacteristic.prototype.onWriteRequest = function(data, offset, 
     })
     callback(this.RESULT_UNLIKELY_ERROR);
   }
-  dispatcher.runPythonScript("status_indicator.py", ["orange"]);
 
   io.store("MAIN.rl.min", this._value.toString())
   .then((success) => {

@@ -1,7 +1,7 @@
 var bleno = require('bleno');
 var util = require('util');
 const Constants = require('../../constants')
-var characteristicNames = ["version", "shutdown", "rcWrite", "datesync", "name"]
+var characteristicNames = ["scan", "connect"]
 
 
 
@@ -13,12 +13,12 @@ for (var name of characteristicNames) {
   characteristics.push(new CharType())
 }
 
-function SystemInformationService() {
+function NetworkService() {
   bleno.PrimaryService.call(this, {
     uuid: Constants.uuidFor(module.filename),
     characteristics: characteristics
   });
 };
 
-util.inherits(SystemInformationService, bleno.PrimaryService);
-module.exports = SystemInformationService;
+util.inherits(NetworkService, bleno.PrimaryService);
+module.exports = NetworkService;

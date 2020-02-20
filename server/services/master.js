@@ -1,7 +1,7 @@
 var bleno = require('bleno');
 
 var servicesLib = [
-  "pingpong","sysinfo", "routine"
+  "pingpong","sysinfo", "routine", "network"
 ]
 
 for (service of servicesLib) {

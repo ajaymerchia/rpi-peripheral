@@ -26,7 +26,8 @@ NetworkScanCharacteristic.prototype.onReadRequest = function(offset, callback) {
 
   var commaSeparatedNetworkList = "";
   const fetch = spawn("python", ['/home/pi/wkspc/rpi-peripheral/robinslight_processes/essidExtractor.py'])
-  fetch.on('data', (chunk) => {
+  fetch.stdout.setEncoding('utf8');
+  fetch.stdout.on('data', (chunk) => {
   	  console.log("recieved chunk:", chunk)
       commaSeparatedNetworkList += chunk
   })

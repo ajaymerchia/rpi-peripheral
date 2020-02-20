@@ -9,7 +9,7 @@ const child = require('child_process');
 const spawn = child.spawn
 
 var RCWriteCharacteristic = function() {
-    ShutdownCharacteristic.super_.call(this, {
+    RCWriteCharacteristic.super_.call(this, {
     uuid: Constants.uuidFor(module.filename),
     properties: ['write'],
   });

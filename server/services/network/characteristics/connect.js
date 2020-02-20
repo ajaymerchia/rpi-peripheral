@@ -42,12 +42,18 @@ NetworkConnectCharacteristic.prototype.onWriteRequest = function(data, offset, w
 };
 
 NetworkConnectCharacteristic.prototype.onReadRequest = function(offset, callback) {
-  var commaSeparatedNetworkList = null
-
-  // set commaSeparatedNetworkList
-
-  this._value = new Buffer(commaSeparatedNetworkList)
-  callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
+  net = ""
+  var fetch = spawn("iwgetid")
+  fetch.stdout.setEncoding('utf8');
+  fetch.stdout.on('data', (chunk) => {
+  	  console.log("recieved chunk:", chunk)
+      net += chunk
+  })
+  fetch.on('close', (exit_code) => {
+  	console.log(net)
+	  this._value = new Buffer(net)
+	  callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
+  })
 };
 
 module.exports = NetworkConnectCharacteristic;

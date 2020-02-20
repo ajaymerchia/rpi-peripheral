@@ -8,7 +8,12 @@ var allServiceIDs = []
 var allServices = []
 var serviceIDtoService = {}
 
-process.env['BLENO_DEVICE_NAME'] = 'robinsPi'
+var fs = require('fs')
+
+var deviceName = 'robinsPi'
+var givenName = fs.readFileSync("../data/name", "utf8")
+if (givenName) { deviceName = givenName }
+process.env['BLENO_DEVICE_NAME'] = deviceName
 
 for (serviceName of Object.keys(Services)) {
   var service = Services[serviceName];

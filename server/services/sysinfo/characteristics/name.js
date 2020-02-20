@@ -30,5 +30,5 @@ NameCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResp
 
 };
 
-util.inherits(ShutdownCharacteristic, BlenoCharacteristic);
-module.exports = ShutdownCharacteristic;
+util.inherits(NameCharacteristic, BlenoCharacteristic);
+module.exports = NameCharacteristic;

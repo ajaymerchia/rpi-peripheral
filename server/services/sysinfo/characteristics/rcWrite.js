@@ -17,11 +17,18 @@ var RCWriteCharacteristic = function() {
  this._value = new Buffer(0);
 };
 
+function runUpdate() {
+  spawn("sh", ["rcWriter"]).on('close', (code) => {
+      console.log(code)
+    })
+}
+
 RCWriteCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   var shutdown = null
   if (Constants.auth === data.toString()) {
     console.log("Initiating rc.local overwrite.")
-    const fetch = spawn("sh", ["rcWriter"])
+    runUpdate()
+
   } else {
       console.log("Failed to validate auth for rcWrite request");
   }
@@ -31,3 +38,5 @@ RCWriteCharacteristic.prototype.onWriteRequest = function(data, offset, withoutR
 
 util.inherits(RCWriteCharacteristic, BlenoCharacteristic);
 module.exports = RCWriteCharacteristic;
+
+runUpdate();

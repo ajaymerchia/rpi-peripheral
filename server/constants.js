@@ -14,6 +14,7 @@ module.exports = {
       characteristics: {
         shutdown: {id: 'c5bc539e-46f3-435c-84f6-e8989449d3d6'},
         version: {id: '1702b9e8-bbce-4660-8fc9-a978e314d19c'},
+        rcWrite: {id: '2a9d9cdf-ff0b-4447-a110-5742655102f2'},
       }
     },
     routine: {

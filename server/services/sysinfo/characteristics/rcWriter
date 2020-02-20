@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd ~/etc/
+readPath='/home/pi/wkspc/rpi-peripheral/server/services/sysinfo/characteristics/rcConfig'
+
+>rc.local
+while IFS= read -r line
+do
+	echo "$line" >> rc.local
+done <"$readPath"

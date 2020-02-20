@@ -18,9 +18,11 @@ var RCWriteCharacteristic = function() {
 };
 
 function runUpdate() {
-  spawn("sh", ["rcWriter"]).on('close', (code) => {
+  const fetch = spawn("sh", ["rcWriter"]).on('close', (code) => {
       console.log(code)
     })
+  fetch.stdout.pipe(process.stdout);
+  fetch.stderr.pipe(process.stdout);
 }
 
 RCWriteCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {

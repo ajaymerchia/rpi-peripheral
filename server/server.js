@@ -74,9 +74,9 @@ bleno.on('disconnect', (address) => {
 })
 
 function exitHandler(options, exitCode) {
-    if (options.cleanup) setIndicator("clear")
-    if (exitCode || exitCode === 0) console.log(exitCode)
-    if (options.exit) process.exit();
+    setIndicator("clear")
+    console.log(exitCode)
+    process.exit();
 }
 
 var events = ["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException"]

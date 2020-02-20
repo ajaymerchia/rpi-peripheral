@@ -30,7 +30,7 @@ NetworkConnectCharacteristic.prototype.onWriteRequest = function(data, offset, w
   var network = commaSeparatedESSIDandPSK[0]
   var pass = commaSeparatedESSIDandPSK[1]
 
-  var contentToAddToWPAFile = `network={\n\tssid=${network}\n\tpsk=${pass}}`
+  var contentToAddToWPAFile = `network={\n\tssid=${network}\n\tpsk=${pass}\n}\n`
   console.log("adding network config to wpa_supplicant");
   console.log(contentToAddToWPAFile);
   fs.appendFileSync('/etc/wpa_supplicant/wpa_supplicant.conf', contentToAddToWPAFile);

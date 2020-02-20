@@ -38,7 +38,20 @@ RoutineReceiverCharacteristic.prototype.onWriteRequest = function(data, offset, 
   io.store("MAIN.rl.min", this._value.toString())
   .then((success) => {
     if (success) {
-      dispatcher.runPythonScript("rl_compiler.py", ["MAIN"])
+      // orange loading light
+      dispatcher.runPythonScript("status_indicator.py", ["orange"]);
+
+      compilation = dispatcher.runPythonScript("rl_compiler.py", ["MAIN"])
+      compilation.on('close', (code) => {
+        if (code == 0) {
+          dispatcher.runPythonScript("status_indicator.py", ["green"]);
+        } else {
+          // flash red to indicate an error, then set to green
+          dispatcher.runPythonScript("status_indicator.py", ["red", 45]).on('close', (code) => {
+            dispatcher.runPythonScript("status_indicator.py", ["green"]);
+          })
+        }
+      })
       console.log("Succesfully wrote file!");
       callback(this.RESULT_SUCCESS);
     } else {

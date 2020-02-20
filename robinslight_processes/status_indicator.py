@@ -7,7 +7,8 @@ COLOR_MAP = {
     "blue": (0,0,255),
     "clear": (0,0,0),
     "white": (255, 255, 255),
-    "pink": (255,20,147)
+    "pink": (255,20,147),
+    "orange": (255, 155, 0)
 }
 
 STATUS_PIXELS = 5

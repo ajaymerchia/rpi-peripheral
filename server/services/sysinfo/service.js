@@ -1,7 +1,7 @@
 var bleno = require('bleno');
 var util = require('util');
 const Constants = require('../../constants')
-var characteristicNames = ["version", "shutdown", "rcWrite"]
+var characteristicNames = ["version", "shutdown", "rcWrite", "datesync"]
 
 
 

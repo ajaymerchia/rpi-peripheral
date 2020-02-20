@@ -28,7 +28,7 @@ function setIndicator(color) {
 
 bleno.on('stateChange', function(state) {
   console.log('on -> stateChange: ' + state);
-  bleno.name = process.env['BLENO_DEVICE_NAME'] = 'robinsPi'
+  bleno.name = process.env['BLENO_DEVICE_NAME'] = deviceName
 
   if (state === 'poweredOn') {
     console.log(`Powered on as ${bleno.name}`);

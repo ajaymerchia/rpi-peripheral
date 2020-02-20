@@ -32,24 +32,24 @@ RoutineReceiverCharacteristic.prototype.onWriteRequest = function(data, offset, 
   console.log('RoutineReceiverCharacteristic - onWriteRequest: value = ' + this._value.toString());
 
   function reportFailure() {
+    dispatcher.runPythonScript("status_indicator.py", ["red", 45]).on('close', (code) => {
+      dispatcher.runPythonScript("status_indicator.py", ["green"]);
+    })
     callback(this.RESULT_UNLIKELY_ERROR);
   }
+  dispatcher.runPythonScript("status_indicator.py", ["orange"]);
 
   io.store("MAIN.rl.min", this._value.toString())
   .then((success) => {
     if (success) {
       // orange loading light
-      dispatcher.runPythonScript("status_indicator.py", ["orange"]);
-
       compilation = dispatcher.runPythonScript("rl_compiler.py", ["MAIN"])
       compilation.on('close', (code) => {
         if (code == 0) {
           dispatcher.runPythonScript("status_indicator.py", ["green"]);
         } else {
           // flash red to indicate an error, then set to green
-          dispatcher.runPythonScript("status_indicator.py", ["red", 45]).on('close', (code) => {
-            dispatcher.runPythonScript("status_indicator.py", ["green"]);
-          })
+          reportFailure()
         }
       })
       console.log("Succesfully wrote file!");

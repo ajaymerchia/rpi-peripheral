@@ -37,14 +37,34 @@ CheckVersionCharacteristic.prototype.onReadRequest = function(offset, callback) 
 
 
 CheckVersionCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
+  function reportFailure() {
+    dispatcher.runPythonScript("status_indicator.py", ["red", 45]).on('close', (code) => {
+      dispatcher.runPythonScript("status_indicator.py", ["green"]);
+    })
+    callback(this.RESULT_UNLIKELY_ERROR);
+  }
+
+
   if (Constants.auth === data.toString()) {
     console.log("Updating code from origin...")
+    dispatcher.runPythonScript("status_indicator.py", ["orange"])
+
     const fetch = spawn("git", ["pull", "origin", "master"])
-	fetch.stdout.pipe(process.stdout);
+	  fetch.stdout.pipe(process.stdout);
+    fetch.on('close', (code) => {
+      if (code == 0) {
+        dispatcher.runPythonScript("status_indicator.py", ["green"]);
+        callback(this.RESULT_SUCCESS);
+      } else {
+        reportFailure()
+      }
+    })
+
   } else {
     console.log("Auth code did not match")
+    reportFailure()
   }
-  callback(this.RESULT_SUCCESS);
+
 };
 
 util.inherits(CheckVersionCharacteristic, BlenoCharacteristic);

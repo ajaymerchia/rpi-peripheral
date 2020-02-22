@@ -12,21 +12,19 @@ var BlenoCharacteristic = bleno.Characteristic;
 var NetworkDisconnectCharacteristic = function() {
  NetworkDisconnectCharacteristic.super_.call(this, {
     uuid: Constants.uuidFor(module.filename),
-    properties: ['read'],
+    properties: ['write'],
     value: null
   });
-
- this._value = new Buffer(0);
 };
 util.inherits(NetworkDisconnectCharacteristic, BlenoCharacteristic);
 
 
-NetworkDisconnectCharacteristic.prototype.onReadRequest = function(offset, callback) {
+NetworkDisconnectCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   console.log("Wifi disconnect request recieved...")
 
   if (Constants.auth === data.toString()) {
     console.log("Wifi disconnect initiated...")
-    spawn("ifconfig", ["wlan0", "down"])   
+    spawn("ifconfig", ["wlan0", "down"])
   } else {
     console.log("Auth code did not match")
   }

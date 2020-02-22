@@ -6,6 +6,8 @@ var BlenoCharacteristic = bleno.Characteristic;
 
 const child = require('child_process');
 const spawn = child.spawn
+const dispatcher = require('../../../dispatcher')
+
 
 var CheckVersionCharacteristic = function() {
   CheckVersionCharacteristic.super_.call(this, {

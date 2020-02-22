@@ -23,21 +23,21 @@ util.inherits(NetworkScanCharacteristic, BlenoCharacteristic);
 
 NetworkScanCharacteristic.prototype.onReadRequest = function(offset, callback) {
   console.log("wifi scan request recieved")
-
-  var commaSeparatedNetworkList = "";
-  const fetch = spawn("python", ['/home/pi/wkspc/rpi-peripheral/robinslight_processes/essidExtractor.py'])
-  fetch.stdout.setEncoding('utf8');
-  fetch.stdout.on('data', (chunk) => {
-  	  console.log("recieved chunk:", chunk)
-      commaSeparatedNetworkList += chunk
+  spawn("ifconfig", ["wlan0", "up"]).on('close', (exit) => {
+    var commaSeparatedNetworkList = "";
+    const fetch = spawn("python", ['/home/pi/wkspc/rpi-peripheral/robinslight_processes/essidExtractor.py'])
+    fetch.stdout.setEncoding('utf8');
+    fetch.stdout.on('data', (chunk) => {
+    	  console.log("recieved chunk:", chunk)
+        commaSeparatedNetworkList += chunk
+    })
+    fetch.on('close', (exit_code) => {
+    	  console.log("writing buffer")
+    	  console.log(commaSeparatedNetworkList)
+  	  this._value = new Buffer(commaSeparatedNetworkList)
+  	  callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
+    })
   })
-  fetch.on('close', (exit_code) => {
-  	  console.log("writing buffer")
-  	  console.log(commaSeparatedNetworkList)
-	  this._value = new Buffer(commaSeparatedNetworkList)
-	  callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
-  })
-
 };
 
 

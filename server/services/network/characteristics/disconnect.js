@@ -30,6 +30,8 @@ NetworkDisconnectCharacteristic.prototype.onReadRequest = function(offset, callb
   } else {
     console.log("Auth code did not match")
   }
+
+  callback(this.RESULT_SUCCESS)
 };
 
 

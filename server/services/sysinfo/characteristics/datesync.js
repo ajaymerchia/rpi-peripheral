@@ -17,20 +17,16 @@ var DateSyncCharacteristic = function() {
 };
 
 DateSyncCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
-  if (Constants.auth === data.toString()) {
-    // set status color
-    dispatcher.runPythonScript("status_indicator.py", ["orange"]);
-    console.log("NOT IMPLEMENTED");
+  console.log("Datesync request recieved...")
 
-    // sync.on('close', (code) => {
-    //   console.log(`child process exited with code ${code}`);
-    //   callback(this.RESULT_SUCCESS);
-    //   // spawn("shutdown", ["now"])
-    // });
+  if (Constants.auth === data.toString()) {
+    console.log("Datesync initiated.")
+    spawn("date")
   } else {
-      console.log("Failed to validate auth for date sync request");
-      callback(this.RESULT_SUCCESS);
+    console.log("Auth code did not match")
   }
+
+  callback(this.RESULT_SUCCESS)
 
 };
 

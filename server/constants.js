@@ -31,7 +31,8 @@ module.exports = {
       characteristics: {
         scan: {id: "7aef3840-9e5c-460f-a960-4a24fa62db6e"},
         connect: {id: "f09e8654-7cf9-4b13-a489-899d608159cc"},
-        disconnect: {id: "9abaab33-3e74-406b-be92-511f5ea6cd31"}
+        disconnect: {id: "9abaab33-3e74-406b-be92-511f5ea6cd31"},
+        forget: {id: "b50920d9-d1b6-4e6e-8fc2-ebe33a9166c1"}
       }
     }
   }

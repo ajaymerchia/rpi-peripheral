@@ -18,3 +18,24 @@ exports.runPythonScript = (filename, cmdlineargs) => {
   });
   return child
 }
+
+exports.runPythonScriptWithStatus = (filename, cmdlineargs) => {
+  function reportFailure() {
+    exports.runPythonScript("status_indicator.py", ["red", 45]).on('close', (ignored) => {
+      exports.runPythonScript("status_indicator.py", ["green"]);
+    })
+  }
+
+  exports.runPythonScript("status_indicator.py", ["orange"]).on('close', (ignored) => {
+    exports.runPythonScript(filename, cmdlineargs).on('close', (code) => {
+      if (code == 0) {
+        exports.runPythonScript("status_indicator.py", ["green"]);
+      } else {
+        reportFailure()
+      }
+    })
+  })
+
+
+
+}

@@ -92,5 +92,5 @@ for (event of events) {
 }
 
 setInterval((unused) => {
-  spawn('date')=
+  spawn('date')
 }, 1000 * 10)

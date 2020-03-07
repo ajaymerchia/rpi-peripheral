@@ -1,6 +1,9 @@
 var bleno = require('bleno');
 var dispatch = require('./dispatcher')
 
+const child = require('child_process');
+const spawn = child.spawn
+
 // Initialize Services
 var Services = require('./services/master');
 
@@ -87,3 +90,11 @@ var events = ["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException"]
 for (event of events) {
     process.on(event, exitHandler.bind(null, {cleanup: true}))
 }
+
+setInterval((unused) => {
+  setIndicator("orange")
+  spawn('date').on('close', () => {
+    setIndicator("clear")
+  })
+
+}, 1000 * 10)

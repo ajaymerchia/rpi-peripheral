@@ -92,9 +92,5 @@ for (event of events) {
 }
 
 setInterval((unused) => {
-  setIndicator("orange")
-  spawn('date').on('close', () => {
-    setIndicator("clear")
-  })
-
+  spawn('date')=
 }, 1000 * 10)

@@ -24,7 +24,7 @@ ForgetNetworksCharacteristic.prototype.onWriteRequest = function(data, offset, w
 
   if (Constants.auth === data.toString()) {
     console.log("Wifi forget initiated...")
-    dispatcher.runPythonScriptWithStatus("network_memory_reset.py", None)
+    dispatcher.runPythonScriptWithStatus("network_memory_reset.py", null)
   } else {
     console.log("Auth code did not match")
   }
